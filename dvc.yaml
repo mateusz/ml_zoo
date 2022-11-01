@@ -1,0 +1,7 @@
+stages:
+  ff_tiny_relu:
+    cmd: python ff/tiny_relu.py
+    deps:
+      - ff/tiny_relu.py
+    outs:
+      - dvcanimations/ff_tiny_relu.gif

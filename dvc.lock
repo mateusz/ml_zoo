@@ -1,0 +1,12 @@
+schema: '2.0'
+stages:
+  ff_tiny_relu:
+    cmd: python ff/tiny_relu.py
+    deps:
+    - path: ff/tiny_relu.py
+      md5: 432a981b9ba37ecde8664051267b4555
+      size: 3003
+    outs:
+    - path: dvcanimations/ff_tiny_relu.gif
+      md5: 9433877ab858984a33c858c2c9721d26
+      size: 185039
