@@ -1,12 +1,72 @@
 schema: '2.0'
 stages:
   ff_tiny_relu:
-    cmd: python ff/tiny_relu.py
+    cmd: python -m ff.quadratic
     deps:
-    - path: ff/tiny_relu.py
-      md5: 432a981b9ba37ecde8664051267b4555
-      size: 3003
+    - path: common
+      md5: fb01712c5f8788d450f7fcd33ae2af2a.dir
+      size: 7176
+      nfiles: 4
+    - path: ff/quadratic.py
+      md5: 1fae355a46be3b27492356dcad647fd4
+      size: 636
     outs:
-    - path: dvcanimations/ff_tiny_relu.gif
-      md5: 9433877ab858984a33c858c2c9721d26
-      size: 185039
+    - path: dvcanimations/ff_quadratic.gif
+      md5: ad8500ae492b76fcc3653792b8628bbb
+      size: 207024
+  ff_dense_relu:
+    cmd: python -m ff.cubic
+    deps:
+    - path: common
+      md5: fb01712c5f8788d450f7fcd33ae2af2a.dir
+      size: 7176
+      nfiles: 4
+    - path: ff/cubic.py
+      md5: d2983c11f4579f2a7eac08897dbd245b
+      size: 676
+    outs:
+    - path: dvcanimations/ff_cubic.gif
+      md5: c7953a7b8832185dad9150129c3a1758
+      size: 210067
+  ff_quadratic:
+    cmd: python -m ff.quadratic
+    deps:
+    - path: common
+      md5: fb01712c5f8788d450f7fcd33ae2af2a.dir
+      size: 7176
+      nfiles: 4
+    - path: ff/quadratic.py
+      md5: 1fae355a46be3b27492356dcad647fd4
+      size: 636
+    outs:
+    - path: dvcanimations/ff_quadratic.gif
+      md5: 1904dccdae5851ce796db6e63ade8e7f
+      size: 196841
+  ff_periodic:
+    cmd: python -m ff.periodic
+    deps:
+    - path: common
+      md5: fb01712c5f8788d450f7fcd33ae2af2a.dir
+      size: 7176
+      nfiles: 4
+    - path: ff/periodic.py
+      md5: adb1978fe73cb61ca635f65bf054ebf1
+      size: 689
+    outs:
+    - path: dvcanimations/ff_periodic.gif
+      md5: e797acbb4fc5f6055cdc9d144671ce5e
+      size: 229554
+  ff_cubic:
+    cmd: python -m ff.cubic
+    deps:
+    - path: common
+      md5: fb01712c5f8788d450f7fcd33ae2af2a.dir
+      size: 7176
+      nfiles: 4
+    - path: ff/cubic.py
+      md5: d2983c11f4579f2a7eac08897dbd245b
+      size: 676
+    outs:
+    - path: dvcanimations/ff_cubic.gif
+      md5: 8124ebe893b8de3152569eaf20ccf5b4
+      size: 203495

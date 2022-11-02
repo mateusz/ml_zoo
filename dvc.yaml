@@ -1,7 +1,22 @@
 stages:
-  ff_tiny_relu:
-    cmd: python ff/tiny_relu.py
+  ff_quadratic:
+    cmd: python -m ff.quadratic
     deps:
-      - ff/tiny_relu.py
+      - common
+      - ff/quadratic.py
     outs:
-      - dvcanimations/ff_tiny_relu.gif
+      - dvcanimations/ff_quadratic.gif
+  ff_cubic:
+    cmd: python -m ff.cubic
+    deps:
+      - common
+      - ff/cubic.py
+    outs:
+      - dvcanimations/ff_cubic.gif
+  ff_periodic:
+    cmd: python -m ff.periodic
+    deps:
+      - common
+      - ff/periodic.py
+    outs:
+      - dvcanimations/ff_periodic.gif
