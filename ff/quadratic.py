@@ -14,16 +14,16 @@ def mkdata():
 
     y = f(x) + tf.random.normal(shape=[201], stddev=0.5)
 
-    return [x,y,f(x)]
+    return lib.PlotData(x,f(x)).set_examples(x,y)
 
 
 def main():
-    x,y,yorig = mkdata()
+    pd = mkdata()
     m = models.HandmadeTinyRelu()
-    dataset = tf.data.Dataset.from_tensor_slices((x, y))
-    dataset = dataset.shuffle(buffer_size=x.shape[0]).batch(16)
-    hvars,losses = lib.sgd(m, dataset, lib.mse_loss)
-    lib.plot(x,y,yorig,hvars,losses,m,name='ff_quadratic')
+    dataset = tf.data.Dataset.from_tensor_slices((pd.x, pd.y))
+    dataset = dataset.shuffle(buffer_size=pd.x.shape[0]).batch(16)
+    lib.sgd(pd, m, dataset, lib.mse_loss)
+    lib.plot(pd, m, name='ff_quadratic')
 
 if __name__=='__main__':
     main()

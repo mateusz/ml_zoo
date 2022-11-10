@@ -32,55 +32,55 @@ stages:
     cmd: python -m ff.quadratic
     deps:
     - path: common
-      md5: c2f1cede0925cc4dac763c31072c1bc7.dir
-      size: 7447
+      md5: d9177bc1d71fc0d16d489ceb2e4f5181.dir
+      size: 8844
       nfiles: 4
     - path: ff/quadratic.py
-      md5: e6f1c6680a4e73df573911ed0ec4e098
-      size: 657
+      md5: 576883fb93ee61ac8d7e7ac77e62e440
+      size: 658
     outs:
     - path: dvcanimations/ff_quadratic.gif
-      md5: dda43b40e786cc52172f59eedce303d0
-      size: 192534
+      md5: 6a13062466df6122e557ad2896f0c5e5
+      size: 196291
   ff_periodic:
     cmd: python -m ff.periodic
     deps:
     - path: common
-      md5: c2f1cede0925cc4dac763c31072c1bc7.dir
-      size: 7447
+      md5: d9177bc1d71fc0d16d489ceb2e4f5181.dir
+      size: 8844
       nfiles: 4
     - path: ff/periodic.py
-      md5: ea1e06fde16a938cd19fec705ea1bcb8
+      md5: 283d97eba2ed63fd6d71dee221514f49
       size: 703
     outs:
     - path: dvcanimations/ff_periodic.gif
-      md5: 9422549d3439f10b7985654f783f61ca
-      size: 223704
+      md5: 8a0bfed24fb606e367a2cabb088012a4
+      size: 220023
   ff_cubic:
     cmd: python -m ff.cubic
     deps:
     - path: common
-      md5: c2f1cede0925cc4dac763c31072c1bc7.dir
-      size: 7447
+      md5: d9177bc1d71fc0d16d489ceb2e4f5181.dir
+      size: 8844
       nfiles: 4
     - path: ff/cubic.py
-      md5: 84c327bab5bc0a06482afa12fd1321ff
-      size: 690
+      md5: 35c593fe8cef0e11c923f5cac7e94144
+      size: 691
     outs:
     - path: dvcanimations/ff_cubic.gif
-      md5: 79e57e4d812091d15281caf64d634d53
-      size: 200103
+      md5: 887860b3448ed37baa2b1a27fd2306ef
+      size: 199326
   ff_skewed:
     cmd: python -m ff.skewed
     deps:
     - path: common
-      md5: c2f1cede0925cc4dac763c31072c1bc7.dir
-      size: 7447
+      md5: d9177bc1d71fc0d16d489ceb2e4f5181.dir
+      size: 8844
       nfiles: 4
     - path: ff/skewed.py
-      md5: 0190453bb729dc39738824e8fd7e99f5
-      size: 719
+      md5: 2012cae5df95df50ce57379bc44386a2
+      size: 703
     outs:
     - path: dvcanimations/ff_skewed.gif
-      md5: 71c72b46504bbb32763faa8950890022
-      size: 391084
+      md5: b72753afa54dc1f613c3dca3bc3adeed
+      size: 403280

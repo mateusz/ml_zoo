@@ -7,7 +7,36 @@ gpus = tf.config.experimental.list_physical_devices('GPU')
 for gpu in gpus:
   tf.config.experimental.set_memory_growth(gpu, True)
 
+class PlotData:
+    def __init__(
+        self,
+        xground,
+        yground,
+    ):
+        self.xground = xground
+        self.yground = yground
+
+        self.x = []
+        self.y = []
+
+        self.hvars = []
+        self.losses = []
+
+    def set_examples(self, x, y):
+        self.x = x
+        self.y = y
+        return self
+
+    def add_hvar(self, hv):
+        self.hvars.append(hv)
+        return self
+
+    def add_loss(self, l):
+        self.losses.append(l)
+        return self
+
 def sgd(
+    pd: PlotData,
     model,
     dataset,
     loss_fn,
@@ -15,8 +44,6 @@ def sgd(
     learning_rate = 0.01,
     skip_rate = 1
 ):
-    hvars = []
-    losses = []
     for epoch in range(epochs):
         mean_epoch_loss = tf.metrics.Mean()
         for x, y in dataset:
@@ -33,22 +60,28 @@ def sgd(
         if epoch % skip_rate == 0:
             l = mean_epoch_loss.result().numpy()
             print('%d MSE=%.2f' % (epoch, l))
-            losses.append(l)
-            hvars.append([epoch, [tf.constant(v) for v in model.trainable_variables]])
+            pd.add_loss(l)
+            pd.add_hvar([epoch, [tf.constant(v) for v in model.trainable_variables]])
 
-    return hvars, losses
 
-def plot(x,y,yorig,hvars,losses,model,name):
+def plot(
+    pd: PlotData,
+    model,
+    name
+):
     fig, ax = plt.subplots()
-    ax.plot(x, y, '.', label='x')
-    ax.plot(x, yorig, label='ground truth')
+    ax.plot(pd.x, pd.y, '.', label='x')
+    ax.plot(pd.xground, pd.yground, label='ground truth')
     mplot, = ax.plot([], [], label='model')
     info = ax.text(0.82, 0.01, '', transform=ax.transAxes)
     ax.legend()
 
+    hvars = pd.hvars
     pad = hvars[-1]
     for _ in range(0, 10, 1):
         hvars.append(pad)
+
+    losses = pd.losses
     pad = losses[-1]
     for _ in range(0, 10, 1):
         losses.append(pad)
@@ -62,7 +95,7 @@ def plot(x,y,yorig,hvars,losses,model,name):
         z = zip(hvars[frame][1], model.trainable_variables)
         for a,v in z:
             v.assign(a)
-        mplot.set_data(x, model(x))
+        mplot.set_data(pd.x, model(pd.x))
         info.set_text('E#%d L=%.1f' % (hvars[frame][0], losses[frame]))
         return tuple([mplot]) + tuple([info])
 
