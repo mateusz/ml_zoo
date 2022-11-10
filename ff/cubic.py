@@ -22,8 +22,8 @@ def main():
     m = models.DenseRelu()
     dataset = tf.data.Dataset.from_tensor_slices((x, y))
     dataset = dataset.shuffle(buffer_size=x.shape[0]).batch(16)
-    hvars = lib.sgd(m, dataset, lib.mse_loss, learning_rate=0.005)
-    lib.plot(x,y,yorig,hvars,m,name='ff_cubic')
+    hvars,losses = lib.sgd(m, dataset, lib.mse_loss, learning_rate=0.005)
+    lib.plot(x,y,yorig,hvars,losses,m,name='ff_cubic')
 
 if __name__=='__main__':
     main()

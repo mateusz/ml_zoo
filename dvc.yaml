@@ -13,6 +13,13 @@ stages:
       - ff/cubic.py
     outs:
       - dvcanimations/ff_cubic.gif
+  ff_skewed:
+    cmd: python -m ff.skewed
+    deps:
+      - common
+      - ff/skewed.py
+    outs:
+      - dvcanimations/ff_skewed.gif
   ff_periodic:
     cmd: python -m ff.periodic
     deps:

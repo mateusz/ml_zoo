@@ -16,6 +16,7 @@ def sgd(
     skip_rate = 1
 ):
     hvars = []
+    losses = []
     for epoch in range(epochs):
         mean_epoch_loss = tf.metrics.Mean()
         for x, y in dataset:
@@ -30,35 +31,40 @@ def sgd(
                 v.assign_sub(learning_rate*g)
 
         if epoch % skip_rate == 0:
-            print('%d MSE=%.2f' % (epoch, mean_epoch_loss.result()))
+            l = mean_epoch_loss.result().numpy()
+            print('%d MSE=%.2f' % (epoch, l))
+            losses.append(l)
             hvars.append([epoch, [tf.constant(v) for v in model.trainable_variables]])
 
-    return hvars
+    return hvars, losses
 
-def plot(x,y,yorig,hvars,model,name):
+def plot(x,y,yorig,hvars,losses,model,name):
     fig, ax = plt.subplots()
     ax.plot(x, y, '.', label='x')
     ax.plot(x, yorig, label='ground truth')
     mplot, = ax.plot([], [], label='model')
-    frame_no = ax.text(0.82, 0.01, '', transform=ax.transAxes)
+    info = ax.text(0.82, 0.01, '', transform=ax.transAxes)
     ax.legend()
 
     pad = hvars[-1]
     for _ in range(0, 10, 1):
         hvars.append(pad)
+    pad = losses[-1]
+    for _ in range(0, 10, 1):
+        losses.append(pad)
 
     def init():
         mplot.set_data([], [])
-        frame_no.set_text('')
-        return tuple([mplot]) + tuple([frame_no])
+        info.set_text('')
+        return tuple([mplot]) + tuple([info])
 
     def update(frame):
         z = zip(hvars[frame][1], model.trainable_variables)
         for a,v in z:
             v.assign(a)
         mplot.set_data(x, model(x))
-        frame_no.set_text('Epoch #%d' % hvars[frame][0])
-        return tuple([mplot]) + tuple([frame_no])
+        info.set_text('E#%d L=%.1f' % (hvars[frame][0], losses[frame]))
+        return tuple([mplot]) + tuple([info])
 
     ani = FuncAnimation(fig, update, init_func=init, frames=np.arange(0, len(hvars), 1), blit=True)
     ani.save('dvcanimations/%s.gif' % name, writer=PillowWriter(fps=5))

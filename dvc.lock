@@ -32,41 +32,55 @@ stages:
     cmd: python -m ff.quadratic
     deps:
     - path: common
-      md5: fb01712c5f8788d450f7fcd33ae2af2a.dir
-      size: 7176
+      md5: c2f1cede0925cc4dac763c31072c1bc7.dir
+      size: 7447
       nfiles: 4
     - path: ff/quadratic.py
-      md5: 1fae355a46be3b27492356dcad647fd4
-      size: 636
+      md5: e6f1c6680a4e73df573911ed0ec4e098
+      size: 657
     outs:
     - path: dvcanimations/ff_quadratic.gif
-      md5: 1904dccdae5851ce796db6e63ade8e7f
-      size: 196841
+      md5: dda43b40e786cc52172f59eedce303d0
+      size: 192534
   ff_periodic:
     cmd: python -m ff.periodic
     deps:
     - path: common
-      md5: fb01712c5f8788d450f7fcd33ae2af2a.dir
-      size: 7176
+      md5: c2f1cede0925cc4dac763c31072c1bc7.dir
+      size: 7447
       nfiles: 4
     - path: ff/periodic.py
-      md5: adb1978fe73cb61ca635f65bf054ebf1
-      size: 689
+      md5: ea1e06fde16a938cd19fec705ea1bcb8
+      size: 703
     outs:
     - path: dvcanimations/ff_periodic.gif
-      md5: e797acbb4fc5f6055cdc9d144671ce5e
-      size: 229554
+      md5: 9422549d3439f10b7985654f783f61ca
+      size: 223704
   ff_cubic:
     cmd: python -m ff.cubic
     deps:
     - path: common
-      md5: fb01712c5f8788d450f7fcd33ae2af2a.dir
-      size: 7176
+      md5: c2f1cede0925cc4dac763c31072c1bc7.dir
+      size: 7447
       nfiles: 4
     - path: ff/cubic.py
-      md5: d2983c11f4579f2a7eac08897dbd245b
-      size: 676
+      md5: 84c327bab5bc0a06482afa12fd1321ff
+      size: 690
     outs:
     - path: dvcanimations/ff_cubic.gif
-      md5: 8124ebe893b8de3152569eaf20ccf5b4
-      size: 203495
+      md5: 79e57e4d812091d15281caf64d634d53
+      size: 200103
+  ff_skewed:
+    cmd: python -m ff.skewed
+    deps:
+    - path: common
+      md5: c2f1cede0925cc4dac763c31072c1bc7.dir
+      size: 7447
+      nfiles: 4
+    - path: ff/skewed.py
+      md5: 0190453bb729dc39738824e8fd7e99f5
+      size: 719
+    outs:
+    - path: dvcanimations/ff_skewed.gif
+      md5: 71c72b46504bbb32763faa8950890022
+      size: 391084
