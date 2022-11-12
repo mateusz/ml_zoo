@@ -22,10 +22,10 @@ def mkdata(words):
 
     def f(inputs):
         #return (vec(inputs)/len(words) * 2.0 - 1.0)**2 * 5.0
-        return (vec(inputs)/len(words) * 2.0 - 1.0)
+        return (vec(inputs)/(len(words)-1) * 2.0 - 1.0)
 
     x = np.random.choice(words, size=100, replace=True)
-    y = f(x) + tf.random.normal(shape=[100], stddev=0.05)
+    y = f(x) + tf.random.normal(shape=[100], stddev=0.1)
 
     return [lib.PlotData(words,f(words)).set_examples(x,y),vec]
 
@@ -60,15 +60,15 @@ def plot(
         ax.scatter(xground_embeds, pd.yground, label='ground truth')
         for i, word in enumerate(pd.xground):
             ax.annotate(word, (xground_embeds[i], pd.yground[i]))
-        ax.scatter(x_embeds, pd.y, marker='+', alpha=0.3, label='x')
+        ax.scatter(x_embeds, pd.y, marker='+', alpha=0.5, label='x')
 
         glued = np.vstack((xground_embeds[:,0], model(vec(pd.xground))[:,0,0])).transpose()
         glued = glued[glued[:,0].argsort()]
         ax.plot(glued[:,0], glued[:,1], label='model', color='darkgreen')
         ax.text(0.82, 0.01, 'E#%d L=%.1f' % (hvars[frame][0], losses[frame]), transform=ax.transAxes)
 
-        ax.set_xlim(-1.0,1.0)
-        ax.set_ylim(-1.0,1.0)
+        ax.set_xlim(-1.1,1.1)
+        ax.set_ylim(-1.1,1.1)
         ax.legend()
 
     ani = FuncAnimation(fig, update, frames=np.arange(0, len(hvars), 1))
@@ -80,10 +80,10 @@ def main():
     words = ['big', 'red', 'robot', 'jumped', 'over', 'a', 'lazy', 'ai']
     pd,vec = mkdata(words)
 
-    m = models.WithEmbed(len(words), 1)
+    m = models.WithEmbed(len(words), 4)
     dataset = tf.data.Dataset.from_tensor_slices((vec(pd.x), pd.y))
-    dataset = dataset.shuffle(buffer_size=pd.x.shape[0]).batch(8)
-    lib.sgd(pd, m, dataset, lib.mse_loss, learning_rate=0.05, epochs=40, skip_rate=1)
+    dataset = dataset.shuffle(buffer_size=pd.x.shape[0]).batch(1)
+    lib.sgd(pd, m, dataset, lib.mse_loss, learning_rate=0.005, epochs=30, skip_rate=1)
     plot(pd,vec,m,'nlp_embed')
 
 if __name__=='__main__':
