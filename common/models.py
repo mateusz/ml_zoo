@@ -35,11 +35,13 @@ class DenseRelu(tf.Module):
 
 class WithEmbed(tf.Module):
     def __init__(self, vocab=10, dense=16):
-        self.embed = tf.keras.layers.Embedding(vocab, 1, embeddings_initializer='uniform')
+        ru = tf.keras.initializers.RandomUniform(minval=-0.5, maxval=0.5)
+
+        self.embed = tf.keras.layers.Embedding(vocab, 1, embeddings_initializer=ru)
         self.embed.build((1))
         #self.l1 = tf.keras.layers.Dense(units=dense, activation='relu', bias_initializer=tf.random.normal, kernel_initializer=tf.random.normal)
         #self.l1.build((1))
-        #self.l2 = tf.keras.layers.Dense(units=1, activation='linear', kernel_initializer=tf.random.normal, name='decision')
+        self.l2 = tf.keras.layers.Dense(units=1, activation='linear', kernel_initializer=tf.random.normal, name='decision')
         #self.l2.build((1))
 
     def do_embed(self, w):
