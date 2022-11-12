@@ -55,7 +55,10 @@ def sgd(
             mean_epoch_loss.update_state(yloss)
 
             for g,v in zip(grads, model.trainable_variables):
-                v.assign_sub(learning_rate*g)
+                if type(g) is tf.IndexedSlices:
+                    v.assign_sub(learning_rate*tf.convert_to_tensor(g))
+                else:
+                    v.assign_sub(learning_rate*g)
 
         if epoch % skip_rate == 0:
             l = mean_epoch_loss.result().numpy()
@@ -95,7 +98,7 @@ def plot(
         z = zip(hvars[frame][1], model.trainable_variables)
         for a,v in z:
             v.assign(a)
-        mplot.set_data(pd.x, model(pd.x))
+        mplot.set_data(pd.xground, model(pd.xground))
         info.set_text('E#%d L=%.1f' % (hvars[frame][0], losses[frame]))
         return tuple([mplot]) + tuple([info])
 
