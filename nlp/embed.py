@@ -57,10 +57,11 @@ def plot(
         x_embeds = model.do_embed(vec(pd.x))
 
         ax.clear()
-        ax.scatter(xground_embeds, pd.yground, label='ground truth')
+        ax.scatter(x_embeds, pd.y, marker='+', alpha=0.5, label='x')
+
+        ax.scatter(xground_embeds, pd.yground, label='ground truth', marker='.')
         for i, word in enumerate(pd.xground):
             ax.annotate(word, (xground_embeds[i], pd.yground[i]))
-        ax.scatter(x_embeds, pd.y, marker='+', alpha=0.5, label='x')
 
         glued = np.vstack((xground_embeds[:,0], model(vec(pd.xground))[:,0,0])).transpose()
         glued = glued[glued[:,0].argsort()]
@@ -83,7 +84,7 @@ def main():
     m = models.WithEmbed(len(words), 4)
     dataset = tf.data.Dataset.from_tensor_slices((vec(pd.x), pd.y))
     dataset = dataset.shuffle(buffer_size=pd.x.shape[0]).batch(1)
-    lib.sgd(pd, m, dataset, lib.mse_loss, learning_rate=0.005, epochs=30, skip_rate=1)
+    lib.sgd(pd, m, dataset, lib.mse_loss, learning_rate=0.005, epochs=20, skip_rate=1)
     plot(pd,vec,m,'nlp_embed')
 
 if __name__=='__main__':
