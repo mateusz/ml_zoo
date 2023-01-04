@@ -107,4 +107,21 @@ def plot(
     plt.close()
 
 def mse_loss(y_pred, y):
-  return tf.reduce_mean(tf.square(y_pred - y))
+    return tf.reduce_mean(tf.square(y_pred - y))
+
+def log_loss(y_pred, y):
+    # Calculated from negative log likelihood on top of exponential distribution.
+    # Does not work as aloss :-)
+    return tf.reduce_mean(y_pred/y - tf.math.log(1/y))
+
+# https://github.com/lukovkin/linex-keras
+# Use a < 0 to penalize errors with negative values more, and a > 0 otherwise.
+class linex_loss:
+    def __init__(self, a=-1, b=1):
+        self.a = a
+        self.b = b
+
+    def __call__(self, y_pred, y):
+        # b * (exp(a * x) - a * x - 1)
+        delta = tf.math.abs(y_pred - y)
+        return tf.reduce_mean(self.b * (tf.math.exp(self.a*delta)-self.a*delta-1))

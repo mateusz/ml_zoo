@@ -6,6 +6,7 @@ from common import models
 
 
 def mkdata():
+    
     x = tf.linspace(-2, 2, 201)
     x = tf.cast(x, tf.float32)
 
