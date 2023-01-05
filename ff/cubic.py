@@ -19,11 +19,11 @@ def mkdata():
 
 def main():
     pd = mkdata()
-    m = models.DenseRelu(32)
+    m = models.DenseRelu('relu32', 32)
     dataset = tf.data.Dataset.from_tensor_slices((pd.x, pd.y))
     dataset = dataset.shuffle(buffer_size=pd.x.shape[0]).batch(16)
     lib.sgd(pd, m, dataset, lib.mse_loss, learning_rate=0.005, epochs=40)
-    lib.plot(pd, m, name='ff_cubic')
+    lib.plot(pd, name='ff_cubic')
 
 if __name__=='__main__':
     main()

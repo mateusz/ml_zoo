@@ -29,6 +29,7 @@ def mkdata(words):
 
     return [lib.PlotData(words,f(words)).set_examples(x,y),vec]
 
+# TODO fixup for the latest changes to lib.PlotData
 def plot(
     pd: lib.PlotData,
     vec,
@@ -81,7 +82,7 @@ def main():
     words = ['big', 'red', 'robot', 'jumped', 'over', 'a', 'lazy', 'ai']
     pd,vec = mkdata(words)
 
-    m = models.WithEmbed(len(words), 4)
+    m = models.WithEmbed('emb_relu4', len(words), 4)
     dataset = tf.data.Dataset.from_tensor_slices((vec(pd.x), pd.y))
     dataset = dataset.shuffle(buffer_size=pd.x.shape[0]).batch(1)
     lib.sgd(pd, m, dataset, lib.mse_loss, learning_rate=0.005, epochs=20, skip_rate=1)
