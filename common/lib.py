@@ -141,12 +141,9 @@ def msle_loss(y_pred, y):
     y_log = tf.math.log(tf.maximum(y, tf.keras.backend.epsilon()) + 1.0)
     return tf.reduce_mean(tf.square(y_pred_log - y_log)) 
 
-def log_loss(y_pred, y):
-    # Calculated from negative log likelihood on top of exponential distribution.
-    # Does not work as a loss for exponentially-distributed ground truths :-)
-    # Unless I'm wrong, which is possible, this shows motivating MSE using
-    # negative log likelihood of Gaussian is valid, but contrived.
-    return tf.reduce_mean(y_pred/y - tf.math.log(1/y))
+def mle_exp_loss(y_pred, y):
+    y_pred_log = tf.math.log(tf.maximum(y_pred, tf.keras.backend.epsilon()) + 1.0)
+    return tf.reduce_mean(tf.math.divide_no_nan(y, y_pred) + y_pred_log)
 
 # https://github.com/lukovkin/linex-keras
 # Use a < 0 to penalize errors with negative values more, and a > 0 otherwise.

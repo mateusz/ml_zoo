@@ -18,11 +18,8 @@ def mkdata():
     def f(x):
         return 2*x**2 + 2*x + 2
 
-    y = []
-    for o in x:
-        s = stats.norm.rvs(loc=math.log(f(o)), scale=1, size=1)
-        s = math.exp(s)
-        y.append(tf.cast(s, tf.float32))
+    exp_mean = 5
+    y = f(x) + tfp.distributions.Exponential(rate=1/exp_mean).sample(201)-exp_mean
 
     return lib.PlotData(x,f(x)).set_examples(x,y)
 
@@ -33,19 +30,13 @@ def main():
     dataset = dataset.shuffle(buffer_size=pd.x.shape[0]).batch(16)
 
     m = models.DenseRelu('base', 16)
+    m_exp = models.DenseRelu('mle_exp', 16)
     m_mse = models.DenseRelu('mse', 16)
-    m_mae = models.DenseRelu('mae', 16)
-    m_msle = models.DenseRelu('msle', 16)
-    m_linex = models.DenseRelu('linex', 16)
+    lib.copy_model(m_exp, m)
     lib.copy_model(m_mse, m)
-    lib.copy_model(m_mae, m)
-    lib.copy_model(m_msle, m)
-    lib.copy_model(m_linex, m)
 
+    lib.sgd(pd, m_exp, dataset, lib.mle_exp_loss, learning_rate=0.1, epochs=40)
     lib.sgd(pd, m_mse, dataset, lib.mse_loss, learning_rate=0.0005, epochs=40)
-    lib.sgd(pd, m_mae, dataset, lib.mae_loss, learning_rate=0.005, epochs=40)
-    lib.sgd(pd, m_msle, dataset, lib.msle_loss, learning_rate=0.05, epochs=40)
-    lib.sgd(pd, m_linex, dataset, lib.linex_loss(a=-0.2), learning_rate=0.05, epochs=40)
 
     lib.plot(pd, 'ff_quadratic_exp')
 
